@@ -17,7 +17,6 @@
   }
   setProvider(typeof w['__adprovider'] !== 'undefined' ? w['__adprovider'] : CODEFUND)
   var prevHref = ''
-  var cfAttempt = 0
   function loadScript(src, id, position) {
     var script = document.createElement('script')
     script.setAttribute('async', '')
@@ -77,7 +76,7 @@
     if (prevHref && l.href === prevHref) return
     log('location changed')
     clearTimeout(locationTimeout)
-    setTimeout(renderAd, 250)
+    setTimeout(renderAd, 50)
   }
   
   var prevOnLoad = w.onload
@@ -85,18 +84,20 @@
     log('codefund', evt['detail'])
     var status = evt['detail'].status;
     var inHouse = evt['detail'].house;
-    if (status === 'ok' && (
-      !inHouse
-      || (inHouse && Math.random() > 0.7)
-    )) {
-      getTagEl().removeAttribute('style')
-      reg()
-      return cfAttempt = 0;
+    if (status !== 'ok') {
+      setProvider(CARBON);
+      return setTimeout(renderAd, 50);
     }
-
-    cfAttempt++;
-    if (cfAttempt >= 3) setProvider(CARBON)
-    setTimeout(renderAd, 250)
+    if (!inHouse) {
+      getTagEl().removeAttribute('style')
+      return reg()
+    };
+    if (Math.random() > 0.7) {
+      setProvider(CARBON);
+      return setTimeout(renderAd, 50);
+    }
+    getTagEl().removeAttribute('style')
+    return reg()
   });
   w.onload = function() {
     log('window loaded')
