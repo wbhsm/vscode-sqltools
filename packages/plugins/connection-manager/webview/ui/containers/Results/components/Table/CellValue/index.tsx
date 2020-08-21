@@ -1,13 +1,15 @@
 import React from 'react';
-export const ValueRender = ({ value }) => {
+import styles from './style.m.scss';
+
+export const CellValue = ({ value }) => {
   if (value === null)
-    return <small className='cell-value value-null'>NULL</small>;
+    return <code className={styles.cellValue}>NULL</code>;
   if (typeof value === 'number')
-    return <span className='cell-value value-number'>{value}</span>;
+    return <code className={styles.cellValue}>{value}</code>;
   if (value === true || value === false)
-    return <span className={`cell-value value-bool ${value.toString()}`}>{value.toString().toUpperCase()}</span>;
+    return <code className={styles[value.toString()]}>{value.toString().toUpperCase()}</code>;
   if (typeof value === 'object' || Array.isArray(value)) {
-    return (<>{JSON.stringify(value, null, 2)}</>);
+    return (<code>{JSON.stringify(value, null, 2)}</code>);
   }
   return <>{String(value)}</>;
     // DISABLE! Performance issues here
@@ -29,4 +31,4 @@ export const ValueRender = ({ value }) => {
     // </span>
 };
 
-export default ValueRender;
+export default CellValue;

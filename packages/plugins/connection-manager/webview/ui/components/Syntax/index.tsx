@@ -1,8 +1,6 @@
 import React from 'react';
-import { clipboardInsert } from '../lib/utils';
-import '../sass/syntax.scss'; // @TODO CSS modules
-
-
+import { clipboardInsert } from '../../lib/utils';
+import styles from './style.m.scss';
 interface SyntaxProps {
   language?: string;
   width?: string;
@@ -48,14 +46,14 @@ export default class Syntax extends React.Component<SyntaxProps, SyntaxState> {
   }
   public render() {
     return (
-      <div className='relative syntax-container' style={{ width: this.props.width, ...this.props.style }}>
-        <div
+      <main className={styles.syntaxContainer} style={{ width: this.props.width, ...this.props.style }}>
+        <section
           id={this.id}
-          className={`syntax ${this.props.language} ${this.props.strong ? 'strong-bg' : ''}`}
+          className={`${this.props.strong ? styles.syntaxStrongBg : styles.syntax} ${this.props.language ? 'syntax-' + this.props.language : ''}`}
           dangerouslySetInnerHTML={{ __html: this.renderCode(this.props.code) }}
-        ></div>
-        {this.props.allowCopy && <button className='copy-code' type='button' onClick={this.copyCode}>{this.state.copyMsg}</button>}
-      </div>
+        ></section>
+        {this.props.allowCopy && <button className={styles.copyCodeButton} type='button' onClick={this.copyCode}>{this.state.copyMsg}</button>}
+      </main>
     );
   }
 }
