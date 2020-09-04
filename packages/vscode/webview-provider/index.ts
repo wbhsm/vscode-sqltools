@@ -84,14 +84,18 @@ export default abstract class WebviewProvider<State = any> implements Disposable
 
   public onViewActive?: (active: boolean) => any;
   private onDidReceiveMessage = ({ action, payload, ...rest}) => {
-    switch(action) {
+    switch (action) {
       case DefaultUIAction.RESPONSE_STATE:
         this.lastState = payload;
         break;
       case DefaultUIAction.CALL:
         return commands.executeCommand(payload.command, ...(payload.args || []));
       case DefaultUIAction.NOTIFY_VIEW_READY:
-        process.env.NODE_ENV === 'development' && commands.executeCommand('workbench.action.webview.openDeveloperTools');
+        process.env.NODE_ENV === 'development' &&
+          commands.executeCommand('workbench.action.webview.openDeveloperTools');
+        break;
+      case DefaultUIAction.OPEN_DEVTOOLS:
+        commands.executeCommand('workbench.action.webview.openDeveloperTools');
         break;
     }
     if (this.messagesHandler) {
