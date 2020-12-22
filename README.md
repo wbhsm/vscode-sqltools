@@ -99,3 +99,4 @@ See changelog [here](https://vscode-sqltools.mteixeira.dev/changelog)
 ## Feedback
 
 Please provide feedback through the [GitHub Issue](https://github.com/mtxr/vscode-sqltools/issues) system.
+#1
